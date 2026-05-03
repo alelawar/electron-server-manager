@@ -1,0 +1,38 @@
+{
+  "name": "wsl-server-manager",
+  "version": "1.0.0",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .\"",
+    "build": "vite build && electron-builder",
+    "preview": "vite preview"
+  },
+  "build": {
+    "appId": "com.yourname.wslmanager",
+    "win": {
+      "target": "nsis"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "electron": "^41.5.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "electron-builder": "^26.8.1",
+    "tailwindcss": "^4.2.4",
+    "vite": "^8.0.10",
+    "wait-on": "^9.0.5"
+  }
+}
