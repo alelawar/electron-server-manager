@@ -6,5 +6,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   streamLogs: (scriptPath) =>
     ipcRenderer.send('server:stream-log', { scriptPath }),
   onLogData: (callback) =>
-    ipcRenderer.on('log:data', (_, data) => callback(data))
+    ipcRenderer.on('log:data', (_, data) => callback(data)),
+
+  close: () => ipcRenderer.send('window:close'),
+  minimize: () => ipcRenderer.send('window:minimize'),
+  maximize: () => ipcRenderer.send('window:maximize'),
 })

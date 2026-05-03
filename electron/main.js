@@ -11,7 +11,8 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true
-    }
+    },
+    frame: false,
   })
 
   // Dev: load Vite dev server | Prod: load built file
@@ -58,6 +59,23 @@ ipcMain.on('server:stream-log', (event, { scriptPath }) => {
   proc.stdout.on('data', (data) => {
     event.sender.send('log:data', data.toString())
   })
+})
+
+// ✅ HANDLE WINDOW CONTROL
+ipcMain.on('window:close', () => {
+  mainWindow.close()
+})
+
+ipcMain.on('window:minimize', () => {
+  mainWindow.minimize()
+})
+
+ipcMain.on('window:maximize', () => {
+  if (mainWindow.isMaximized()) {
+    mainWindow.unmaximize()
+  } else {
+    mainWindow.maximize()
+  }
 })
 
 app.whenReady().then(createWindow)
