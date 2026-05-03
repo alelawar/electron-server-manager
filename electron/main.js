@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain, Tray, Menu } = require('electron')
 const { exec, spawn } = require('child_process')
 const path = require('path')
 
+
 let mainWindow, tray
 
 function createWindow() {
@@ -24,12 +25,33 @@ function createWindow() {
 // Jalanin command WSL
 ipcMain.handle('server:command', async (event, { scriptPath, command }) => {
   return new Promise((resolve) => {
-    exec(`wsl bash ${scriptPath} ${command}`, (err, stdout, stderr) => {
-      resolve({ success: !err, output: stdout || stderr })
+    // Pakai wsl.exe dengan flag --exec supaya session-nya persist
+    exec(
+      `wsl.exe bash -ic "bash '${scriptPath}' ${command}"`,
+      { timeout: 15000 },
+      (err, stdout, stderr) => {
+        resolve({ success: !err, output: stdout || stderr })
+      }
+    )
+
+    const proc = spawn('wsl.exe', ['-e', 'bash', '-c', `bash "${scriptPath}" ${command}`], {
+      detached: true,
+      stdio: ['ignore', 'pipe', 'pipe'],
+      windowsHide: true,
     })
+
+    let output = ''
+    proc.stdout.on('data', d => output += d.toString())
+    proc.stderr.on('data', d => output += d.toString())
+
+    proc.on('close', (code) => {
+      resolve({ success: code === 0, output })
+    })
+
+    // Unref supaya Electron ga nunggu process ini
+    proc.unref()
   })
 })
-
 // Stream log real-time
 ipcMain.on('server:stream-log', (event, { scriptPath }) => {
   const proc = spawn('wsl', ['bash', scriptPath, 'logs'])

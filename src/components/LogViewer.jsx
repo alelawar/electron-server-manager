@@ -20,6 +20,12 @@ function colorizeLog(line) {
   return 'text-[#94a3b8]'
 }
 
+function stripAnsi(str) {
+  return str.replace(/\x1B\[[0-9;]*[mGKHF]/g, '')
+    .replace(/\u001b\[[0-9;]*[mGKHF]/g, '')
+    .replace(/\[[\d;]*m/g, '') // fallback
+}
+
 export default function LogViewer({ server, logs, onClear, onBack }) {
   const bottomRef = useRef(null)
 
@@ -28,7 +34,7 @@ export default function LogViewer({ server, logs, onClear, onBack }) {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [logs])
 
-  const allLines = logs.join('').split('\n')
+  const allLines = logs.join('').split('\n').map(stripAnsi)
 
   return (
     <div className="h-full flex flex-col overflow-hidden">
@@ -76,7 +82,7 @@ export default function LogViewer({ server, logs, onClear, onBack }) {
       </div>
 
       {/* Terminal */}
-      <div className="flex-1 overflow-y-auto bg-[#0a0d14] p-5 log-terminal">
+      <div className="flex-1 overflow-y-auto bg-[#0a0d14] p-5 log-terminal select-text">
         {allLines.length === 0 || (allLines.length === 1 && allLines[0] === '') ? (
           <div className="flex items-center justify-center h-full">
             <p className="text-[#2a3347] text-sm">No logs yet — start the server to see output</p>
