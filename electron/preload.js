@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.on('log:data', (_, data) => callback(data)),
 
   close: () => ipcRenderer.send('window:close'),
+  closeAndShutdown: () => ipcRenderer.send('window:close-and-shutdown'),
   minimize: () => ipcRenderer.send('window:minimize'),
   maximize: () => ipcRenderer.send('window:maximize'),
 })

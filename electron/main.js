@@ -62,4 +62,17 @@ ipcMain.on('window:maximize', () => {
   }
 })
 
+ipcMain.on('window:close-and-shutdown', () => {
+  // Jalanin wsl --shutdown as administrator
+  exec(
+    'powershell.exe -Command "Start-Process wsl.exe -ArgumentList \'--shutdown\' -Verb RunAs -Wait"',
+    { timeout: 30000 },
+    (err) => {
+      // Tutup app regardless berhasil atau gagal
+      mainWindow.destroy()
+      app.quit()
+    }
+  )
+})
+
 app.whenReady().then(createWindow)
