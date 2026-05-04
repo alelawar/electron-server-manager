@@ -35,22 +35,6 @@ ipcMain.handle('server:command', async (event, { scriptPath, command }) => {
       }
     )
 
-    const proc = spawn('wsl.exe', ['-e', 'bash', '-c', `bash "${scriptPath}" ${command}`], {
-      detached: true,
-      stdio: ['ignore', 'pipe', 'pipe'],
-      windowsHide: true,
-    })
-
-    let output = ''
-    proc.stdout.on('data', d => output += d.toString())
-    proc.stderr.on('data', d => output += d.toString())
-
-    proc.on('close', (code) => {
-      resolve({ success: code === 0, output })
-    })
-
-    // Unref supaya Electron ga nunggu process ini
-    proc.unref()
   })
 })
 // Stream log real-time
