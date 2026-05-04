@@ -4,6 +4,7 @@ export default function AddServerModal({ onAdd, onClose }) {
   const [form, setForm] = useState({
     name: '',
     scriptPath: '',
+    publicUrl: '',
     port: '',
   })
   const [error, setError] = useState('')
@@ -75,6 +76,19 @@ export default function AddServerModal({ onAdd, onClose }) {
               placeholder="/home/username/my-server.sh"
               value={form.scriptPath}
               onChange={e => { setForm(p => ({ ...p, scriptPath: e.target.value })); setError('') }}
+              className="w-full bg-[#0f1117] border border-[#252d3d] rounded-lg px-3 py-2.5 text-sm text-[#e2e8f0] placeholder-[#2a3347] focus:outline-none focus:border-blue-500/60 transition-all font-mono"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-[#64748b] mb-1.5">
+              Public URL <span className="text-[#2a3347]"></span>
+            </label>
+            <input
+              type="text"
+              placeholder="https://server-dsdm-ipb.vercel.app"
+              value={form.publicUrl}
+              onChange={e => { setForm(p => ({ ...p, publicUrl: e.target.value })); setError('') }}
               className="w-full bg-[#0f1117] border border-[#252d3d] rounded-lg px-3 py-2.5 text-sm text-[#e2e8f0] placeholder-[#2a3347] focus:outline-none focus:border-blue-500/60 transition-all font-mono"
             />
           </div>

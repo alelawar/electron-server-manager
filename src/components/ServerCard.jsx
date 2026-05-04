@@ -54,8 +54,10 @@ export default function ServerCard({ server, onCommand, onOpenLogs, onRemove }) 
             <p className="font-medium text-[#e2e8f0] text-sm">{server.name}</p>
             <p className="text-[11px] text-[#475569] mt-0.5 truncate font-mono">{server.scriptPath}</p>
             {isRunning && (
-              <p className="text-[11px] text-blue-400/70 mt-0.5">
+              <p className="text-[11px] text-blue-400/70 mt-0.5 select-text">
                 localhost:{server.port}
+                <br />
+                public: {server.publicUrl || 'N/A'}
               </p>
             )}
           </div>

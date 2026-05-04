@@ -12,6 +12,7 @@ const INITIAL_SERVERS = [
     name: 'RKP Gaji',
     scriptPath: '/home/ahmad_lesmana/rkp-gaji.sh',
     port: 8000,
+    publicUrl: 'https://server-dsdm-ipb.vercel.app',
     status: 'stopped', // 'running' | 'stopped' | 'loading'
   },
 ]
